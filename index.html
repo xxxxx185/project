@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息安全课程网站</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+            color: #333;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo i {
+            color: var(--secondary);
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        #logout-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        
+        #logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop') center/cover;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            border-radius: 0 0 10px 10px;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 20px;
+            z-index: 2;
+        }
+        
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            color: #f0f0f0;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease 0.6s both;
+        }
+        
+        .cta-button:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Course Video */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+        }
+        
+        /* Course Materials */
+        #pdf-section {
+            scroll-margin-top: 100px;
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .material-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .material-card:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .material-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .material-card p {
+            color: #555;
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+        
+        .material-card a {
+            display: inline-flex;
+            align-items: center;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .material-card a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .material-card i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
+        /* Session Info */
+        .session-info {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 500;
+            color: var(--dark);
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .session-info span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+        
+        /* Floating Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .scroll-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-top:hover {
+            background: #2980b9;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>信息安全课程中心</h1>
+            </div>
+            <nav style="flex:1;">
+                <ul style="align-items:center;">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="course.html"><i class="fas fa-video"></i> 课程视频</a></li>
+                    <li><a href="contact.html"><i class="fas fa-envelope"></i> 联系</a></li>
+                </ul>
+            </nav>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div id="session-info" class="session-info session-info-header">
+                    <i class="fas fa-user"></i> 当前状态：未登录用户
+                </div>
+                <a href="login.html" id="login-btn" class="cta-button" style="padding: 6px 16px; font-size: 1rem; margin-left: 0;">登录/注册</a>
+                <button id="logout-btn" style="margin-left:0;"><i class="fas fa-sign-out-alt"></i> 登出</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 搜索栏 -->
+    <div class="container" style="margin-top:20px;">
+        <form id="search-form" style="display:flex;justify-content:center;align-items:center;gap:10px;">
+            <input type="text" id="search-input" placeholder="搜索课程资料/视频..." style="width:320px;padding:10px 16px;border-radius:8px;border:1px solid #ccc;font-size:1rem;">
+            <button type="submit" class="cta-button" style="padding:8px 24px;font-size:1rem;">搜索</button>
+        </form>
+    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>掌握信息安全核心技术</h2>
+            <p>提供全面的信息安全课程资源、实验指导和行业最新动态</p>
+            <a href="course.html" class="cta-button">开始学习 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Course Video Section -->
+            <section class="section">
+                <h2><i class="fas fa-play-circle"></i> 课程导学视频</h2>
+                <div class="video-container">
+                    <video controls poster="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?q=80&w=2070&auto=format&fit=crop">
+                        <source src="视频/信息安全视频.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+            </section>
+
+            <!-- Course Materials Section -->
+            <section class="section" id="pdf-section">
+                <div class="section-title">
+                    <h2><i class="fas fa-book"></i> 课程相关资料</h2>
+                    <a href="pdf-list.html" class="cta-button" style="padding: 8px 20px; font-size: 1rem;">
+                        查看全部课件 <i class="fas fa-arrow-down"></i>
+                    </a>
+                </div>
+                
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <h3>网络安全简介</h3>
+                        <p>了解网络安全的基本概念和发展历程</p>
+                        <a href="PDF总和/网络安全简介.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>网络安全防护体系</h3>
+                        <p>构建全面的网络安全防护体系</p>
+                        <a href="PDF总和/网络安全防护体系文档.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>目标扫描与探测</h3>
+                        <p>使用nmap和XSCAN进行目标扫描</p>
+                        <a href="PDF总和/黑客概述及目标系统的探测.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>口令破解技术</h3>
+                        <p>了解口令破解过程与防范措施</p>
+                        <a href="PDF总和/口令破解过程.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>网络监听工具</h3>
+                        <p>Sniffer工具的使用与分析</p>
+                        <a href="PDF总和/网络监听工具的使用.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>木马攻防技术</h3>
+                        <p>冰河木马分析与防范策略</p>
+                        <a href="PDF总和/木马的攻防.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>拒绝服务攻击</h3>
+                        <p>DDOS攻击原理与防范</p>
+                        <a href="PDF总和/拒绝服务攻击.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>ARP攻击防范</h3>
+                        <p>ARP攻击原理与防御措施</p>
+                        <a href="PDF总和/ARP攻击的防范.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>缓冲区溢出</h3>
+                        <p>缓冲区溢出原理与防范技术</p>
+                        <a href="PDF总和/缓冲区溢出的文档.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>计算机病毒</h3>
+                        <p>计算机病毒的基本概念和分类</p>
+                        <a href="PDF总和/计算机病毒的基本概念、原理和分类.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>密码学基础</h3>
+                        <p>密码学的基本概念及数据加密技术</p>
+                        <a href="PDF总和/密码学的基本概念及数据加密技术在网络安全中的应用.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                    <div class="material-card">
+                        <h3>防火墙技术</h3>
+                        <p>防火墙的基本概念及工作基本原理</p>
+                        <a href="PDF总和/防火墙的基本概念及掌握防火墙的工作基本原理.pdf" target="_blank">
+                            <i class="fas fa-download"></i> 下载PDF
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Session Information 移至右上角 -->
+    <style>
+    .session-info-header {
+        background: transparent;
+        color: #fff;
+        box-shadow: none;
+        margin-left: 20px;
+        font-size: 1rem;
+        padding: 0 10px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        height: 40px;
+        min-width: 160px;
+        justify-content: flex-end;
+        position: relative;
+        top: 0;
+        right: 0;
+        z-index: 101;
+        font-weight: 500;
+        gap: 8px;
+    }
+    .session-info-header span {
+        color: var(--accent);
+        font-weight: 600;
+    }
+    @media (max-width: 768px) {
+        .session-info-header {
+            font-size: 0.95rem;
+            min-width: 120px;
+            margin-left: 0;
+            margin-top: 10px;
+            justify-content: flex-end;
+        }
+    }
+    </style>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="social-links">
+                <a href="https://github.com/xxxxx185" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <p>© 2025 信息安全课程中心 | 提供专业的信息安全教学资源</p>
+            <p> 邮箱: 2350399706@qq.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // 动态获取登录状态并显示
+        function displaySessionInfo() {
+            const sessionInfoDiv = document.getElementById('session-info');
+            const logoutBtn = document.getElementById('logout-btn');
+            const loginBtn = document.getElementById('login-btn');
+            fetch('getSessionInfo.php', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.loggedIn) {
+                        let userType = '普通用户';
+                        if (data.userType === 'admin' || data.userType === '管理员') {
+                            userType = '管理员';
+                        }
+                        sessionInfoDiv.innerHTML = `<i class="fas fa-user"></i> 当前用户：<span>${data.username}</span>（${userType}）`;
+                        logoutBtn.style.display = 'block';
+                        if (loginBtn) loginBtn.style.display = 'none';
+                    } else {
+                        sessionInfoDiv.innerHTML = '<i class="fas fa-user"></i> 当前状态：未登录用户';
+                        logoutBtn.style.display = 'none';
+                        if (loginBtn) loginBtn.style.display = 'inline-block';
+                    }
+                })
+                .catch(() => {
+                    sessionInfoDiv.innerHTML = '<i class="fas fa-user"></i> 当前状态：未登录用户';
+                    logoutBtn.style.display = 'none';
+                    if (loginBtn) loginBtn.style.display = 'inline-block';
+                });
+        }
+
+        // 登出功能
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            fetch('logout.php', { method: 'POST', credentials: 'include' })
+                .then(() => {
+                    alert('您已成功登出');
+                    displaySessionInfo();
+                });
+        });
+
+        // 页面加载时显示会话信息
+        window.addEventListener('DOMContentLoaded', displaySessionInfo);
+        // 注册成功后自动登录支持（如果注册页面设置 localStorage.autoLogin 标记，则自动刷新登录状态）
+        if (localStorage.getItem('autoLogin')) {
+            displaySessionInfo();
+            localStorage.removeItem('autoLogin');
+        }
+        
+        // 滚动到顶部功能
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 为所有内部链接添加平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({ top: targetElement.offsetTop - 80, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 搜索栏功能：模糊搜索课程资料卡片标题并高亮
+        // 搜索支持课程卡片、PDF、视频，弹窗展示所有结果
+        // PDF和视频文件列表（可自动生成或手动维护）
+        const pdfFiles = [
+            { name: '网络安全简介.pdf', path: 'PDF总和/网络安全简介.pdf' },
+            { name: '网络安全防护体系文档.pdf', path: 'PDF总和/网络安全防护体系文档.pdf' },
+            { name: '黑客概述及目标系统的探测(nmap).pdf', path: 'PDF总和/黑客概述及目标系统的探测(nmap).pdf' },
+            { name: '缓冲区溢出的文档.pdf', path: 'PDF总和/缓冲区溢出的文档.pdf' },
+            { name: '计算机病毒的基本概念、原理和分类.pdf', path: 'PDF总和/计算机病毒的基本概念、原理和分类.pdf' },
+            { name: '计算机感染典型病毒的现象.pdf', path: 'PDF总和/计算机感染典型病毒的现象.pdf' },
+            { name: '拒绝服务攻击（DDOS）.pdf', path: 'PDF总和/拒绝服务攻击（DDOS）.pdf' },
+            { name: '口令破解过程（smbcrack2）.pdf', path: 'PDF总和/口令破解过程（smbcrack2）.pdf' },
+            { name: '密码学的基本概念及数据加密技术在网络安全中的应用.pdf', path: 'PDF总和/密码学的基本概念及数据加密技术在网络安全中的应用.pdf' },
+            { name: '木马的攻防（冰河木马）.pdf', path: 'PDF总和/木马的攻防（冰河木马）.pdf' },
+            { name: '目标扫描（XSCAN）.pdf', path: 'PDF总和/目标扫描（XSCAN）.pdf' },
+            { name: '数据加密、传送及解密.pdf', path: 'PDF总和/数据加密、传送及解密.pdf' },
+            { name: '网络安全防护体系文档.pdf', path: 'PDF总和/网络安全防护体系文档.pdf' },
+            { name: '网络安全简介.pdf', path: 'PDF总和/网络安全简介.pdf' },
+            { name: '网络监听工具的使用（sniffer）.pdf', path: 'PDF总和/网络监听工具的使用（sniffer）.pdf' },
+            { name: 'ARP攻击的防范.pdf', path: 'PDF总和/ARP攻击的防范.pdf' },
+            { name: 'VPN文档.pdf', path: 'PDF总和/VPN文档.pdf' },
+            { name: 'Web安全概述.pdf', path: 'PDF总和/Web安全概述.pdf' },
+            { name: 'Web传输安全及SSL安全.pdf', path: 'PDF总和/Web传输安全及SSL安全.pdf' },
+            { name: 'Web服务器软件的安全.pdf', path: 'PDF总和/Web服务器软件的安全.pdf' },
+            { name: 'Web应用程序安全文档.pdf', path: 'PDF总和/Web应用程序安全文档.pdf' },
+            { name: 'Windows Server常用的系统进程和服务.pdf', path: 'PDF总和/Windows Server常用的系统进程和服务.pdf' },
+            { name: 'Windows Server的日志管理.pdf', path: 'PDF总和/Windows Server的日志管理.pdf' },
+            { name: 'Windows Server帐户管理指南.pdf', path: 'PDF总和/Windows Server帐户管理指南.pdf' },
+            { name: 'Windows Server注册表与组策略.pdf', path: 'PDF总和/Windows Server注册表与组策略.pdf' },
+            { name: 'Windows系统的安全机制.pdf', path: 'PDF总和/Windows系统的安全机制.pdf' },
+            { name: '常用的杀毒软件介绍.pdf', path: 'PDF总和/常用的杀毒软件介绍.pdf' }
+        ];
+        const videoFiles = [
+            { name: '防火墙1.mp4', path: '视频/防火墙1.mp4' },
+            { name: '计算机病毒1.mp4', path: '视频/计算机病毒1.mp4' },
+            { name: '密码学1.mp4', path: '视频/密码学1.mp4' },
+            { name: '木马1.mp4', path: '视频/木马1.mp4' },
+            { name: '扫描1.mp4', path: '视频/扫描1.mp4' },
+            { name: '网络安全1.mp4', path: '视频/网络安全1.mp4' },
+            { name: '信息安全视频.mp4', path: '视频/信息安全视频.mp4' },
+            { name: 'nmap1.mp4', path: '视频/nmap1.mp4' },
+            { name: 'web安全1.mp4', path: '视频/web安全1.mp4' },
+            { name: 'Windows1.mp4', path: '视频/Windows1.mp4' }
+        ];
+
+        // 搜索结果弹窗DOM
+        function showSearchResults(results) {
+            let modal = document.getElementById('search-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'search-modal';
+                modal.innerHTML = `<div class="search-modal-content"><span class="close-btn">&times;</span><h3>搜索结果</h3><div class="search-list"></div></div>`;
+                document.body.appendChild(modal);
+                document.querySelector('.close-btn').onclick = function() {
+                    modal.style.display = 'none';
+                };
+            }
+            const list = modal.querySelector('.search-list');
+            list.innerHTML = '';
+            if (results.length === 0) {
+                list.innerHTML = '<p style="padding:20px;color:#888;">未找到相关资料，请尝试其他关键词。</p>';
+            } else {
+                results.forEach(item => {
+                    if (item.type === 'card') {
+                        list.innerHTML += `<div class="search-item"><i class="fas fa-book"></i> <b>${item.title}</b> <span style='color:#666;'>${item.desc}</span></div>`;
+                    } else if (item.type === 'pdf') {
+                        list.innerHTML += `<div class="search-item"><i class="fas fa-file-pdf" style="color:#e74c3c;"></i> <a href="${item.path}" target="_blank">${item.name}</a></div>`;
+                    } else if (item.type === 'video') {
+                        list.innerHTML += `<div class="search-item"><i class="fas fa-film" style="color:#3498db;"></i> <a href="${item.path}" target="_blank">${item.name}</a></div>`;
+                    }
+                });
+            }
+            modal.style.display = 'block';
+        }
+
+        // 搜索事件
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const keyword = document.getElementById('search-input').value.trim().toLowerCase();
+            const cards = document.querySelectorAll('.material-card');
+            let found = false;
+            let results = [];
+            // 搜索课程卡片
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent;
+                if (keyword && title.includes(keyword)) {
+                    card.style.background = '#ffe082';
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    found = true;
+                    results.push({ type: 'card', title: card.querySelector('h3').textContent, desc });
+                } else {
+                    card.style.background = '';
+                }
+            });
+            // 搜索PDF
+            pdfFiles.forEach(file => {
+                if (keyword && file.name.toLowerCase().includes(keyword)) {
+                    results.push({ type: 'pdf', name: file.name, path: file.path });
+                }
+            });
+            // 搜索视频
+            videoFiles.forEach(file => {
+                if (keyword && file.name.toLowerCase().includes(keyword)) {
+                    results.push({ type: 'video', name: file.name, path: file.path });
+                }
+            });
+            showSearchResults(results);
+        });
+    </script>
+    <style>
+    #search-modal {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+    .search-modal-content {
+        background: #fff;
+        border-radius: 12px;
+        max-width: 420px;
+        margin: 80px auto;
+        padding: 30px 24px 18px 24px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        position: relative;
+        animation: fadeIn 0.3s;
+    }
+    .search-modal-content h3 {
+        margin-bottom: 18px;
+        font-size: 1.3rem;
+        color: var(--primary);
+    }
+    .search-list {
+        max-height: 320px;
+        overflow-y: auto;
+    }
+    .search-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .search-item:last-child {
+        border-bottom: none;
+    }
+    .close-btn {
+        position: absolute;
+        top: 12px;
+        right: 18px;
+        font-size: 1.5rem;
+        color: #888;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .close-btn:hover {
+        color: var(--accent);
+    }
+    </style>
+</body>
+</html>
